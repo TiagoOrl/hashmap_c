@@ -20,11 +20,21 @@ size_t hash(char * str)
 Node * createItem(char * data, uint index)
 {
     Node * newNode = (Node *)malloc(sizeof(Node));
-    newNode->data = (char*)malloc(strSize(data) + 1);
+    newNode->data = (char*)malloc(sizeof(char) * strSize(data) + sizeof(char));
     strcpy(newNode->data, data);
     newNode->i = index;
 
     return newNode;
+}
+
+size_t insert(Hashtable * table, char * data)
+{
+    size_t index = hash(data);
+    Node * item = createItem(data, index);
+
+    table->items[index] = item;
+
+    return index;
 }
 
 
