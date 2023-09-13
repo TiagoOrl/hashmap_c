@@ -22,6 +22,8 @@ typedef struct _hashtable Hashtable;
 Hashtable * createHashTable();
 Node * createItem(char * data, uint index);
 size_t hash(char * str);
+size_t insert(Hashtable * table, char * data);
+size_t delete(Hashtable * table, char * data);
 size_t strSize(char * str);
 
 #endif
