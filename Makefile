@@ -5,6 +5,9 @@ DEBUG=-g
 run: main.o hash.o
 	$(CC) -o run main.o hash.o $(DEBUG) && rm *.o && ./run
 
+com: main.o hash.o
+	$(CC) -o run main.o hash.o $(DEBUG) && rm *.o
+
 main.o: main.c
 	$(CC) -c main.c $(DEBUG)
 
