@@ -33,6 +33,7 @@ size_t insert(Hashtable * table, char * data)
     Node * item = createItem(data, index);
 
     table->items[index] = item;
+    table->length++;
 
     return index;
 }
@@ -58,4 +59,54 @@ size_t strSize(char * str)
         i++;
 
     return i;
+}
+
+Node * getByData(Hashtable * table, char * data)
+{
+    if (table == NULL)
+        return NULL;
+    
+    return table->items[hash(data)];
+}
+
+Node * getByIndex(Hashtable * table, uint i)
+{
+    if (table == NULL || i >= CAPACITY)
+        return NULL;
+
+    return table->items[i];
+}
+
+int removeItem(Hashtable * table, char * data)
+{
+    if (table ==  NULL)
+        return -1;
+
+    size_t index = hash(data);
+
+    if (table->items[index] == NULL)
+        return -1;
+    
+    free(table->items[index]->data);
+    table->items[index]->data = NULL;
+    free(table->items[index]);
+    table->items[index] = NULL;
+
+    table->length--;
+
+    return index;
+}
+
+void printAll(Hashtable * table)
+{
+    printf("length: %d\n", table->length);
+
+    if (table->length < 1)
+        return;
+
+    for (int i = 0; i < CAPACITY; i++)
+    {
+        if (table->items[i] != NULL)
+            printf("i: %d data: %s \n", table->items[i]->i, table->items[i]->data);
+    }
 }
