@@ -2,7 +2,7 @@
 
 
 
-size_t hash(char * str)
+size_t ht_hash(char * str)
 {
     size_t i = 0;
     uint j = 0;
@@ -17,20 +17,20 @@ size_t hash(char * str)
 }
 
 
-Node * createItem(char * data, uint index)
+Node * ht_createItem(char * data, uint index)
 {
     Node * newNode = (Node *)malloc(sizeof(Node));
-    newNode->data = (char*)malloc(sizeof(char) * strSize(data) + sizeof(char));
+    newNode->data = (char*)malloc(sizeof(char) * ht_strSize(data) + sizeof(char));
     strcpy(newNode->data, data);
     newNode->i = index;
 
     return newNode;
 }
 
-size_t insert(Hashtable * table, char * data)
+size_t ht_insert(Hashtable * table, char * data)
 {
-    size_t index = hash(data);
-    Node * item = createItem(data, index);
+    size_t index = ht_hash(data);
+    Node * item = ht_createItem(data, index);
 
     table->items[index] = item;
     table->length++;
@@ -39,7 +39,7 @@ size_t insert(Hashtable * table, char * data)
 }
 
 
-Hashtable * createHashTable()
+Hashtable * ht_create()
 {
     Hashtable * newHashTable = (Hashtable *)malloc(sizeof(Hashtable));
     newHashTable->length = 0;
@@ -52,7 +52,7 @@ Hashtable * createHashTable()
 }
 
 
-size_t strSize(char * str)
+size_t ht_strSize(char * str)
 {
     size_t i = 0;
     while (str[i] != '\0')
@@ -61,15 +61,15 @@ size_t strSize(char * str)
     return i;
 }
 
-Node * getByData(Hashtable * table, char * data)
+Node * ht_get(Hashtable * table, char * data)
 {
     if (table == NULL)
         return NULL;
     
-    return table->items[hash(data)];
+    return table->items[ht_hash(data)];
 }
 
-Node * getByIndex(Hashtable * table, uint i)
+Node * ht_getByIndex(Hashtable * table, uint i)
 {
     if (table == NULL || i >= CAPACITY)
         return NULL;
@@ -77,12 +77,12 @@ Node * getByIndex(Hashtable * table, uint i)
     return table->items[i];
 }
 
-int removeItem(Hashtable * table, char * data)
+int ht_remove(Hashtable * table, char * data)
 {
     if (table ==  NULL)
         return -1;
 
-    size_t index = hash(data);
+    size_t index = ht_hash(data);
 
     if (table->items[index] == NULL)
         return -1;
@@ -97,11 +97,11 @@ int removeItem(Hashtable * table, char * data)
     return index;
 }
 
-void printAll(Hashtable * table)
+void ht_printAll(Hashtable * table)
 {
     printf("length: %d\n", table->length);
 
-    if (table->length < 1)
+    if (table == NULL || table->length < 1)
         return;
 
     for (int i = 0; i < CAPACITY; i++)

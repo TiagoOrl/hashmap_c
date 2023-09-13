@@ -6,7 +6,7 @@
 #include<string.h>
 #include "node.h"
 
-#define CAPACITY 120
+#define CAPACITY 500
 
 typedef unsigned long ulong;
 typedef unsigned int uint;
@@ -19,17 +19,17 @@ struct _hashtable
 
 typedef struct _hashtable Hashtable;
 
-Hashtable * createHashTable();
-Node * createItem(char * data, uint index);
-size_t hash(char * str);
-size_t insert(Hashtable * table, char * data);
-size_t delete(Hashtable * table, char * data);
-Node * getByData(Hashtable * table, char * data);
-Node * getByIndex(Hashtable * table, uint i);
-int removeItem(Hashtable * table, char * data);
-size_t removeIndex(Hashtable * table, uint index);
-size_t strSize(char * str);
+Hashtable * ht_create();
+Node * ht_createItem(char * data, uint index);
+size_t ht_hash(char * str);
+size_t ht_insert(Hashtable * table, char * data);
+size_t ht_delete(Hashtable * table, char * data);
+Node * ht_get(Hashtable * table, char * data);
+Node * ht_getByIndex(Hashtable * table, uint i);
+int ht_remove(Hashtable * table, char * data);
+size_t ht_removeIndex(Hashtable * table, uint index);
+size_t ht_strSize(char * str);
 
-void printAll(Hashtable * table);
+void ht_printAll(Hashtable * table);
 
 #endif
