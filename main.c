@@ -13,27 +13,20 @@ int main(int argc, char const *argv[])
     printf("\n\n\n-----\n");
     char * str = "hello";
 
-    Hashtable* table = ht_create();
+    HashMap* table = hm_create();
 
-    ht_insert(table, str);
-    ht_insert(table, "abc");
-    ht_insert(table, "ees");
-    ht_insert(table, "33");
-    ht_insert(table, "-65s");
+    hm_insert(table, "1234", "tiago orlando");
+    hm_insert(table, "12ss", "Noel Bandeire");
+    hm_insert(table, "abcv", "0100111001010");
+    hm_insert(table, "445D", "Hello World");
 
-    ht_printAll(table);
+    hm_remove(table, "abcv");
 
-    // Node * n = getByData(table, argv[1]);
-    // if (n != NULL)
-    //     printf("index: %d\t data: %s\n", n->i, n->data);
+    char * f = hm_get(table, "abcv");
+    if (f != NULL)
+        printf("%s\n", f);
 
-    nLines();
-
-    ht_remove(table, "||");
-    ht_remove(table, "33");
-    ht_remove(table, "-65s");
-    
-    ht_printAll(table);
+    // hm_printAll(table);
 
     
     return 0;

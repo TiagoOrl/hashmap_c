@@ -3,7 +3,7 @@
 
 struct _node
 {
-    unsigned int i;
+    char * key;
     char * data;
 };
 

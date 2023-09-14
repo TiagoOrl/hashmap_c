@@ -3,33 +3,33 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include<string.h>
+#include <string.h>
 #include "node.h"
 
-#define CAPACITY 500
+#define CAPACITY 1000
 
 typedef unsigned long ulong;
 typedef unsigned int uint;
 
-struct _hashtable 
+struct _hashmap 
 {
     Node** items;
     uint length;
 };
 
-typedef struct _hashtable Hashtable;
+typedef struct _hashmap HashMap;
 
-Hashtable * ht_create();
-Node * ht_createItem(char * data, uint index);
-size_t ht_hash(char * str);
-size_t ht_insert(Hashtable * table, char * data);
-size_t ht_delete(Hashtable * table, char * data);
-Node * ht_get(Hashtable * table, char * data);
-Node * ht_getByIndex(Hashtable * table, uint i);
-int ht_remove(Hashtable * table, char * data);
-size_t ht_removeIndex(Hashtable * table, uint index);
-size_t ht_strSize(char * str);
+HashMap * hm_create();
+Node * hm_createItem(char * key, char * data);
+size_t hm_hash(char * key);
+size_t hm_insert(HashMap * table, char * key, char * data);
+size_t hm_delete(HashMap * table, char * key);
+char * hm_get(HashMap * table, char * key);
+char * hm_getByIndex(HashMap * table, uint i);
+int hm_remove(HashMap * table, char * key);
+size_t hm_removeByIndex(HashMap * table, uint index);
+size_t hm_strSize(char * str);
 
-void ht_printAll(Hashtable * table);
+void hm_printAll(HashMap * table);
 
 #endif

@@ -2,7 +2,7 @@
 
 
 
-size_t ht_hash(char * str)
+size_t hm_hash(char * str)
 {
     size_t i = 0;
     uint j = 0;
@@ -17,20 +17,21 @@ size_t ht_hash(char * str)
 }
 
 
-Node * ht_createItem(char * data, uint index)
+Node * hm_createItem(char * key, char * data)
 {
     Node * newNode = (Node *)malloc(sizeof(Node));
-    newNode->data = (char*)malloc(sizeof(char) * ht_strSize(data) + sizeof(char));
+    newNode->key = (char*)malloc(sizeof(char) * hm_strSize(key) + sizeof(char));
+    newNode->data = (char*)malloc(sizeof(char) * hm_strSize(data) + sizeof(char));
     strcpy(newNode->data, data);
-    newNode->i = index;
+    strcpy(newNode->key, key);
 
     return newNode;
 }
 
-size_t ht_insert(Hashtable * table, char * data)
+size_t hm_insert(HashMap * table, char * key, char * data)
 {
-    size_t index = ht_hash(data);
-    Node * item = ht_createItem(data, index);
+    size_t index = hm_hash(key);
+    Node * item = hm_createItem(key, data);
 
     table->items[index] = item;
     table->length++;
@@ -39,9 +40,9 @@ size_t ht_insert(Hashtable * table, char * data)
 }
 
 
-Hashtable * ht_create()
+HashMap * hm_create()
 {
-    Hashtable * newHashTable = (Hashtable *)malloc(sizeof(Hashtable));
+    HashMap * newHashTable = (HashMap *)malloc(sizeof(HashMap));
     newHashTable->length = 0;
     newHashTable->items = (Node**) calloc(CAPACITY, sizeof(Node*));
 
@@ -52,7 +53,7 @@ Hashtable * ht_create()
 }
 
 
-size_t ht_strSize(char * str)
+size_t hm_strSize(char * str)
 {
     size_t i = 0;
     while (str[i] != '\0')
@@ -61,43 +62,52 @@ size_t ht_strSize(char * str)
     return i;
 }
 
-Node * ht_get(Hashtable * table, char * data)
+char * hm_get(HashMap * table, char * key)
 {
     if (table == NULL)
         return NULL;
-    
-    return table->items[ht_hash(data)];
+    Node * found = table->items[hm_hash(key)];
+
+    if (found != NULL)
+        return found->data;
+
+    return NULL;
 }
 
-Node * ht_getByIndex(Hashtable * table, uint i)
+char * hm_getByIndex(HashMap * table, uint i)
 {
-    if (table == NULL || i >= CAPACITY)
+    if (table == NULL || i >= CAPACITY || i < 0)
         return NULL;
 
-    return table->items[i];
+    if (table->items[i] != NULL)
+        return table->items[i]->data;
+
+    return NULL;
 }
 
-int ht_remove(Hashtable * table, char * data)
+int hm_remove(HashMap * table, char * key)
 {
     if (table ==  NULL)
         return -1;
 
-    size_t index = ht_hash(data);
+    size_t hIndex = hm_hash(key);
 
-    if (table->items[index] == NULL)
+    if (table->items[hIndex] == NULL)
         return -1;
     
-    free(table->items[index]->data);
-    table->items[index]->data = NULL;
-    free(table->items[index]);
-    table->items[index] = NULL;
+    free(table->items[hIndex]->data);
+    free(table->items[hIndex]->key);
+    table->items[hIndex]->key = NULL;
+    table->items[hIndex]->data = NULL;
+    free(table->items[hIndex]);
+    table->items[hIndex] = NULL;
 
     table->length--;
 
-    return index;
+    return hIndex;
 }
 
-void ht_printAll(Hashtable * table)
+void hm_printAll(HashMap * table)
 {
     printf("length: %d\n", table->length);
 
@@ -107,6 +117,6 @@ void ht_printAll(Hashtable * table)
     for (int i = 0; i < CAPACITY; i++)
     {
         if (table->items[i] != NULL)
-            printf("i: %d data: %s \n", table->items[i]->i, table->items[i]->data);
+            printf("key: %s data: %s \n", table->items[i]->key, table->items[i]->data);
     }
 }
