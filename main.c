@@ -26,7 +26,7 @@ int main(int argc, char const *argv[])
     if (f != NULL)
         printf("%s\n", f);
 
-    // hm_printAll(table);
+    hm_printAll(table);
 
     
     return 0;

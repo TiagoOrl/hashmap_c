@@ -17,9 +17,9 @@ size_t hm_hash(char * str)
 }
 
 
-Node * hm_createItem(char * key, char * data)
+Item * hm_createItem(char * key, char * data)
 {
-    Node * newNode = (Node *)malloc(sizeof(Node));
+    Item * newNode = (Item *)malloc(sizeof(Item));
     newNode->key = (char*)malloc(sizeof(char) * hm_strSize(key) + sizeof(char));
     newNode->data = (char*)malloc(sizeof(char) * hm_strSize(data) + sizeof(char));
     strcpy(newNode->data, data);
@@ -31,7 +31,7 @@ Node * hm_createItem(char * key, char * data)
 size_t hm_insert(HashMap * table, char * key, char * data)
 {
     size_t index = hm_hash(key);
-    Node * item = hm_createItem(key, data);
+    Item * item = hm_createItem(key, data);
 
     table->items[index] = item;
     table->length++;
@@ -44,7 +44,7 @@ HashMap * hm_create()
 {
     HashMap * newHashTable = (HashMap *)malloc(sizeof(HashMap));
     newHashTable->length = 0;
-    newHashTable->items = (Node**) calloc(CAPACITY, sizeof(Node*));
+    newHashTable->items = (Item**) calloc(CAPACITY, sizeof(Item*));
 
     for (int i = 0; i < CAPACITY; i++)
         newHashTable->items[i] = NULL;
@@ -66,7 +66,7 @@ char * hm_get(HashMap * table, char * key)
 {
     if (table == NULL)
         return NULL;
-    Node * found = table->items[hm_hash(key)];
+    Item * found = table->items[hm_hash(key)];
 
     if (found != NULL)
         return found->data;

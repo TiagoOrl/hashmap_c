@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "node.h"
+#include "item.h"
 
 #define CAPACITY 1000
 
@@ -13,14 +13,14 @@ typedef unsigned int uint;
 
 struct _hashmap 
 {
-    Node** items;
+    Item** items;
     uint length;
 };
 
 typedef struct _hashmap HashMap;
 
 HashMap * hm_create();
-Node * hm_createItem(char * key, char * data);
+Item * hm_createItem(char * key, char * data);
 size_t hm_hash(char * key);
 size_t hm_insert(HashMap * table, char * key, char * data);
 size_t hm_delete(HashMap * table, char * key);
