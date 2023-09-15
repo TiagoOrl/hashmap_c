@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
     hm_insert(table, "abcv", "0100111001010");
     hm_insert(table, "445D", "Hello World");
 
-    hm_remove(table, "abcv");
+    // hm_remove(table, "abcv");
 
     char * f = hm_get(table, "abcv");
     if (f != NULL)
