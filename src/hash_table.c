@@ -32,22 +32,21 @@ Item * hm_createItem(char * key, char * data)
 size_t hm_insert(HashMap * table, char * key, char * data)
 {
     size_t index = hm_hash(key);
-    Item * item = hm_createItem(key, data);
 
     if (hm_get(table, key) != NULL)
         return -1;
 
     if (table->items[index] == NULL)
+    {
+        Item * item = hm_createItem(key, data);
         table->items[index] = item;
+    }
     else 
     {
         if (table->items[index]->list == NULL)
-        {
             table->items[index]->list = l_newList();
-            l_push(table->items[index]->list, data, key);
-        }
-        else
-            l_push(table->items[index]->list, data, key);
+        
+        l_push(table->items[index]->list, data, key);
     }
 
     table->length++;
