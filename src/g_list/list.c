@@ -113,34 +113,14 @@ void l_removeNode(List * list, Node * found)
     // top node
     if (found->prev == NULL)
     {
-        Node * nextSubs = found->next;
-        nextSubs->prev = NULL;
-        list->top = nextSubs;
-        list->size--;
-
-        l_cleanupNode(found);
-        free(found);
+        l_pop(list);
         return;
     }
 
     // bottom node
     if (found->next == NULL)
     {
-        Node * prevSubs = found->prev;
-        Node * it = prevSubs;
-        prevSubs->next = NULL;
-        list->bottom = prevSubs;
-
-        list->size--;
-
-        while(it != NULL)
-        {
-            it->i--;
-            it = it->prev;
-        }
-
-        l_cleanupNode(found);
-        free(found);
+        l_dequeue(list);
         return;
     }
 
@@ -273,6 +253,10 @@ void l_print(List * list)
         printf("bottom:\t(%s)\n\n", list->bottom->data);
 }
 
+/**
+ * free memory from pointers 
+ * allocated and set them to NULL
+*/
 void l_cleanupNode(Node * n)
 {
     free(n->key);

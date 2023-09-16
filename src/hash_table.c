@@ -34,6 +34,9 @@ size_t hm_insert(HashMap * table, char * key, char * data)
     size_t index = hm_hash(key);
     Item * item = hm_createItem(key, data);
 
+    if (hm_get(table, key) != NULL)
+        return -1;
+
     if (table->items[index] == NULL)
         table->items[index] = item;
     else 
