@@ -1,0 +1,1 @@
+## Basic implementation of a hashmap/dictionary in C, using linkedlist for key conflict insertion.
