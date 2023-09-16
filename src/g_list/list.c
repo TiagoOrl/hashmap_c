@@ -1,22 +1,25 @@
 #include "list.h"
 
 
-Node * l_createNode()
+Node * l_createNode(char * key, char * data)
 {
     Node * node = (Node *)malloc(sizeof(Node));
     node->next = NULL;
     node->prev = NULL;
-    node->data = NULL;
+    node->data = (char *)malloc(strlen(data) * sizeof(char));
+    node->key = (char *)malloc(strlen(key) * sizeof(char));
     node->i = -1;
+
+    strcpy(node->data, data);
+    strcpy(node->key, key);
 
     return node;
 }
 
-void l_push(List * list, char * val)
+void l_push(List * list, char * data, char * key)
 {
-    Node * newNode = l_createNode();
+    Node * newNode = l_createNode(key, data);
 
-    strcpy(newNode->data, val);
     newNode->i = list->size;
 
     if (list->top == NULL || list->size == 0)
@@ -39,11 +42,10 @@ char * l_pop(List * list)
         return NULL;
     
     Node * topNode = list->top;
-    char * val = NULL;
+    char * val = (char *)malloc(strlen(list->top->data) * sizeof(char));
     
     strcpy(val, topNode->data);
-    free(topNode->data);
-    topNode->data = NULL;
+    l_cleanupNode(topNode);
 
     list->top = list->top->next;
     if (list->top == NULL)
@@ -76,18 +78,18 @@ Node * l_getAt(List * list, int i)
     return it;
 }
 
-Node * l_getByVal(List * list, char * val)
+Node * l_getByKey(List * list, char * key)
 {
     Node * it = NULL;
 
     if (list == NULL)
-        return;
+        return NULL;
 
     it = list->top;
 
     while (it != NULL)
     {
-        if (strcmp(it->data, val) == 0)
+        if (strcmp(it->key, key) == 0)
             return it;
         it = it->next;
     }
@@ -95,40 +97,12 @@ Node * l_getByVal(List * list, char * val)
     return it;
 }
 
-void l_insertAt(List * list, int i, char * val)
-{
-    if (
-        list->size < 1 || 
-        list->top == NULL || 
-        i >= list->size ||
-        i < 0
-    )
-        return;
-
-    Node * found = NULL;
-    Node * newNode = l_createNode();
-
-    strcpy(newNode->data, val);
-    newNode->i = i;
-
-    if (i == 0)
-        found = list->bottom;
-    else if (i == list->size - 1)
-        found = list->top;
-    else
-        found = l_getAt(list, i);
-
-    if (found == NULL)
-        return;
-
-    strcpy(found->data, val);
-    return;
-}
 
 void l_removeNode(List * list, Node * found)
 {
     if (found == NULL)
         return;
+
 
     if (found->prev == NULL && found->next == NULL)
     {
@@ -144,6 +118,7 @@ void l_removeNode(List * list, Node * found)
         list->top = nextSubs;
         list->size--;
 
+        l_cleanupNode(found);
         free(found);
         return;
     }
@@ -164,6 +139,7 @@ void l_removeNode(List * list, Node * found)
             it = it->prev;
         }
 
+        l_cleanupNode(found);
         free(found);
         return;
     }
@@ -181,18 +157,19 @@ void l_removeNode(List * list, Node * found)
         it = it->prev;
     }
 
+    l_cleanupNode(found);
     free(found);
     return;
 }
 
-void l_removeVal(List * list, int id)
+void l_removeKey(List * list, char * key)
 {
     if (list->size < 1)
         return;
 
     Node * found = NULL;
 
-    found = l_getByVal(list, id);
+    found = l_getByKey(list, key);
     l_removeNode(list, found);
 }
 
@@ -221,6 +198,9 @@ void l_removeAt(List * list, int i)
     l_removeNode(list, found);
 }
 
+/**
+ * removes from bottom/first position
+*/
 char * l_dequeue(List * list)
 {
     if (
@@ -231,9 +211,11 @@ char * l_dequeue(List * list)
         return NULL;
 
     Node * oldBottom = list->bottom;
-    char * val;
+    char * val = (char *)malloc(strlen(oldBottom->data) * sizeof(char));
     strcpy(val, oldBottom->data);
     list->bottom = oldBottom->prev;
+
+    l_cleanupNode(oldBottom);
 
     if (list->bottom != NULL)
         list->bottom->next = NULL;
@@ -274,9 +256,9 @@ void l_print(List * list)
 
     while (it != NULL && list->size > 0)
     {
-        printf("(%d)\tdata: %s", it->i, it->data);
+        printf("(%s)\tdata: %s", it->key, it->data);
         if (it->prev != NULL)
-            printf("\t prev: (%s)\n", it->prev->data);
+            printf("\t prev: (%s)\n", it->prev->key);
         else
             printf("\n");
         it = it->next;
@@ -289,4 +271,12 @@ void l_print(List * list)
     
     if (list->bottom != NULL)
         printf("bottom:\t(%s)\n\n", list->bottom->data);
+}
+
+void l_cleanupNode(Node * n)
+{
+    free(n->key);
+    free(n->data);
+    n->key = NULL;
+    n->data = NULL;
 }

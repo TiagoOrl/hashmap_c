@@ -7,6 +7,7 @@ struct _item
 {
     char * key;
     char * data;
+    List * list;
 };
 
 typedef struct _item Item;
