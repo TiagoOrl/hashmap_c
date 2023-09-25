@@ -9,7 +9,7 @@ size_t hm_hash(char * str)
 
     while (str[j] != '\0')
     {
-        i += str[j];
+        i += str[j] * 127 ^ j;
         j++;
     }
 
