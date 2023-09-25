@@ -24,9 +24,9 @@ int main(int argc, char const *argv[])
     hm_insert(table, "zzx", "TEST");
     hm_insert(table, "pp", "44$");
     hm_insert(table, "z421", " Pelé");
-    hm_insert(table, "arm12", "XZX");
-    hm_insert(table, "arm12", "XZX");
-    hm_insert(table, "arm12", "XZX");
+    hm_insert(table, "arm12", "TEST1");
+    hm_insert(table, "arm21", "TEST2");
+    hm_insert(table, "21arm", "TEST3");
 
 
     printf("%s\n", hm_get(table, "a1234"));
@@ -45,7 +45,7 @@ int main(int argc, char const *argv[])
 
     nLines();
     
-    // hm_printAll(table);
+    hm_printAll(table);
     
     return 0;
 }
