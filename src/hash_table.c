@@ -161,9 +161,17 @@ void hm_printAll(HashMap * table)
     {
         if (table->items[i] != NULL)
         {
-            printf("key: %s data: %s \n", table->items[i]->key, table->items[i]->data);
+            printf("key: %s data: %s ", table->items[i]->key, table->items[i]->data);
             if(table->items[i]->list != NULL)
-                l_print(table->items[i]->list);
+            {
+                Node * it = table->items[i]->list->top;
+                while (it != NULL)
+                {
+                    printf("-> (%s)%s ", it->key, it->data);
+                    it = it->next;
+                }
+            }
+            printf("\n");
         }
     }
 }
